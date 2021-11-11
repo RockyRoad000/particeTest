@@ -36,8 +36,8 @@ class ParticleSystem
 			{
 				// finds the spreadspeed, a random number between then max and the minimum, it multiplies by 1000 then divides by 1000 because c++ rand() doesn't accept anything besides integers
 				float spreadSpeed = static_cast<float>(((rand() % (static_cast<int>(spreadSpeedMax*1000) - static_cast<int>(spreadSpeedMin*1000))) + spreadSpeedMin*1000)/1000);
-				std::vector<float> temp = {startX + (rand() % startSpread)-startSpread/2, startY + (rand() % startSpread)-startSpread/2, spreadSpeed, static_cast<float>(rand() % 360)};
-				// the rand % 360 on the last line finds a random angle, in degrees that it will spread out with
+				std::vector<float> temp = {startX + (rand() % startSpread)-startSpread/2, startY + (rand() % startSpread)-startSpread/2, spreadSpeed, static_cast<float>(rand() % 360), -1, 0};
+				// the rand % 360 on the last line finds a random angle, in degrees that it will spread out with. The last two are used later, for how much it has faded and the rate at which it will fade repectively
 				particles.push_back(temp);
 			}
 		}
@@ -51,16 +51,27 @@ class ParticleSystem
 				particles[i][1] += translation[1];
 			}
 		}
-		void drawParticleSystem(float size, int shapeSides)
+		bool drawParticleSystem(float size, int shapeSides, int r, int g, int b, int o, float fadeSpeedMin, float fadeSpeedMax)
 		{
+			bool stillCanDraw = false;
 			sf::CircleShape triangle(size, shapeSides);
 			for(int i = 0; i < particles.size(); i++)
 			{
-				triangle.setPosition(particles[i][0], particles[i][1]);
-				triangle.setFillColor(sf::Color(250, 150, 250));
-				window.draw(triangle);
+				if(particles[i][4] > 0 || particles[i][4] == -1) // detects if it has faded all the way out yet
+				{
+					if(particles[i][5] == 0)
+					{
+						particles[i][4] = o;
+						particles[i][5] = static_cast<float>(((rand() % (static_cast<int>(fadeSpeedMax*1000) - static_cast<int>(fadeSpeedMin*1000))) + fadeSpeedMin*1000)/1000);
+					}
+					triangle.setPosition(particles[i][0], particles[i][1]);
+					triangle.setFillColor(sf::Color(r, g, b, o+particles[i][4]));
+					window.draw(triangle);
+					particles[i][4]-=particles[i][5];
+					stillCanDraw = true;
+				}
 			}
-		
+			return stillCanDraw;
 		}
 
 };
