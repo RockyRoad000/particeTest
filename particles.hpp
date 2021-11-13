@@ -51,6 +51,14 @@ class ParticleSystem
 				particles[i][1] += translation[1];
 			}
 		}
+		void updateOffsetPos(float x, float y) // optional, can slightly affect performance. only OFFSETS the position, does not reset it from scratch
+		{
+			for(int i = 0; i < particles.size(); i++)
+			{
+				particles[i][0]+=x;
+				particles[i][1]+=y;
+			}
+		}
 		bool drawParticleSystem(float size, int shapeSides, int r, int g, int b, int o, float fadeSpeedMin, float fadeSpeedMax)
 		{
 			bool stillCanDraw = false;
