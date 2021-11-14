@@ -45,9 +45,9 @@ int main()
 
     window.setFramerateLimit(30);
 
-    particleSystemDemo.createParticleSystem(640.0f, 475.0f, 300, 6.0f, 0.04f, 0.4f);
+    particleSystemDemo.createParticleSystem(640.0f, 475.0f, 114000, 26.0f, 0.02f, 7.9f);
 	
-	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::this_thread::sleep_for(std::chrono::seconds(6));
 
     while (window.isOpen())
     {
@@ -62,7 +62,7 @@ int main()
         }
 		window.clear();
         particleSystemDemo.updateParticleSystem();
-        particlesStillDrawing = particleSystemDemo.drawParticleSystem(2, 6, 215, 5, 10, 60, 0.52, 0.74);
+        particlesStillDrawing = particleSystemDemo.drawParticleSystem(2, 6, 100, 100, 255, 60, 0.63, 0.84);
 		std::cout << particlesStillDrawing << "\n";
 		window.display();
     }

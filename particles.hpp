@@ -28,6 +28,7 @@ class ParticleSystem
 {
 	private:
 		std::vector<std::vector<float>> particles;
+		float currentGravitySpeed = 0;
 	public:
 		void createParticleSystem(float startX, float startY, long int startAmount, int startSpread, float spreadSpeedMin, float spreadSpeedMax)
 		{
@@ -41,14 +42,22 @@ class ParticleSystem
 				particles.push_back(temp);
 			}
 		}
-		void updateParticleSystem()
+		void updateParticleSystem(float gravity = 0) // gravity is an optional parameter, if not used it defaults to 0
 		{
+			if(gravity!=0)
+			{
+				currentGravitySpeed+=gravity;
+			}
 			for(int i = 0; i < particles.size(); i++)
 			{
 				float spreadSpeed = particles[i][2];
 				float translation[] = {spreadSpeed * cos(particles[i][3]), spreadSpeed * sin(particles[i][3])};
 				particles[i][0] += translation[0];
 				particles[i][1] += translation[1];
+				if(gravity!=0)
+				{
+					particles[i][1] += currentGravitySpeed;
+				}
 			}
 		}
 		void updateOffsetPos(float x, float y) // optional, can slightly affect performance. only OFFSETS the position, does not reset it from scratch
