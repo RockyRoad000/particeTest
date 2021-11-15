@@ -60,6 +60,7 @@ class ParticleSystem
 				}
 			}
 		}
+		void resetGravity(){currentGravitySpeed = 0.0f;}//this shouldn't even need to exists I'm just terribly coding an implementation of this particle system
 		void updateOffsetPos(float x, float y) // optional, can slightly affect performance. only OFFSETS the position, does not reset it from scratch
 		{
 			for(int i = 0; i < particles.size(); i++)
